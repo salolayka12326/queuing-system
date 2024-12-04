@@ -1,0 +1,7 @@
+mat-toolbar {
+  height: 100%;
+}
+
+::ng-deep .mat-mdc-tab-body-content {
+  overflow: hidden !important;
+}

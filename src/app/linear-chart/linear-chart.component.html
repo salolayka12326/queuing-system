@@ -1,0 +1,23 @@
+<div class="p-3">
+  <div class="row m-0 w-100">
+    <div class="col-6">
+      <mat-label>Лямбда (інтенсивність надходження) від {{minLambda}} до {{maxLambda}}</mat-label>
+      <mat-slider min="0" max="100" class="w-100">
+        <input [(ngModel)]="minLambda"  matSliderStartThumb>
+        <input [(ngModel)]="maxLambda" matSliderEndThumb>
+      </mat-slider>
+    </div>
+    <div class="col-6">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Мю (інтенсивність обслуговування)</mat-label>
+        <input matInput type="number" [(ngModel)]="mu" [min]="1" [max]="100" step="1" placeholder="Мю">
+        <mat-error *ngIf="mu < 1 || mu > 100">
+          1 ... 100
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div>
+    <canvas id="acquisitions" style="height: 600px; width: 100%;"></canvas>
+  </div>
+</div>

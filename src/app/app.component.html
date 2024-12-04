@@ -1,11 +1,41 @@
 <main class="main">
   <div class="header">
     <mat-toolbar>
-      <span>Параметризоване моделювання систем масового обслуговування M|G|1</span>
+      <div class="row m-0 w-100">
+        <div class="col-12">
+          <div class="my-2">
+            <span>Параметризоване моделювання систем масового обслуговування M|G|1</span>
+          </div>
+        </div>
+        <div class="col-3">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Дисципліна</mat-label>
+            <mat-select [(ngModel)]="discipline">
+              <mat-option *ngFor="let option of disciplines" [value]="option.value">
+                {{ option.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-3">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Розподіл</mat-label>
+            <mat-select [(ngModel)]="distribution">
+              <mat-option *ngFor="let option of distributions" [value]="option.value">
+                {{ option.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-6 d-flex align-items-center justify-content-end">
+          <button mat-raised-button color="primary" (click)="appLineChart.recalculate()">Розрахунок</button>
+        </div>
+
+      </div>
     </mat-toolbar>
   <div class="content">
     <mat-tab-group>
-      <mat-tab label="Кількість у черзі"> Content </mat-tab>
+      <mat-tab label="Кількість у черзі" class="overflow-hidden"> <app-linear-chart #appLineChart></app-linear-chart> </mat-tab>
       <mat-tab label="Час очікування"> Content </mat-tab>
       <mat-tab label="Час в системі"> Content </mat-tab>
       <mat-tab label="Порожня система"> Content </mat-tab>
