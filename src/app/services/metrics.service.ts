@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -13,5 +13,9 @@ export class MetricsService {
     }
     const rho = lambda / mu; // Коэффициент загрузки
     return (lambda ** 2) / (2 * mu ** 2 * (1 - rho));
+  }
+
+  calculateQueueLength_FIFO_ED_TIME(lambda: number, mu: number): number {
+    return (lambda * (1 / (mu ** 2)) + mu ** 2) / (2 * (mu - lambda));
   }
 }

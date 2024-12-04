@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {MetricsService} from "../services/metrics.service";
 import {CategoryScale, Chart, ChartItem, LinearScale, LineController, LineElement, PointElement} from "chart.js";
 
@@ -12,6 +12,9 @@ Chart.register(
   styleUrl: './linear-chart.component.scss'
 })
 export class LinearChartComponent {
+
+  @Input discipline: string = '';
+  @Input distribution: string = '';
 
   private chart: Chart | undefined;
 
@@ -41,11 +44,6 @@ export class LinearChartComponent {
     }, 0)
   }
 
-  calculateLq(lambda: number, mu: number): number {
-    const Lq = (lambda ** 2) / (mu * (mu - lambda));
-    return Lq;
-  }
-
   createLineChart(): void {
     const ctx = document.getElementById('acquisitions') as HTMLCanvasElement;
 
@@ -59,8 +57,7 @@ export class LinearChartComponent {
 
     for (let i = this.minLambda; i <= this.maxLambda; i+=0.5) {  // Генерация значений от x = 0 до x = 10
       labels.push(i);
-      console.log(this.calculateLq(i, this.mu));
-      data.push(this.calculateLq(i, this.mu));  // Вычисление значения y для каждого x
+      data.push(this.metricsService.calculateQueueLength_FIFO_ED(i, this.mu));  // Вычисление значения y для каждого x
     }
 
     this.chart = new Chart(
