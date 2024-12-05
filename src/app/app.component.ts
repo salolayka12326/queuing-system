@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, QueryList, ViewChildren} from '@angular/core';
+import {LinearChartComponent} from "./linear-chart/linear-chart.component";
 
 @Component({
   selector: 'app-root',
@@ -6,6 +7,8 @@ import {Component} from '@angular/core';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  @ViewChildren('appLineChart') charts!: QueryList<LinearChartComponent>;
+
   discipline = 'FIFO';
   disciplines = [
     { value: 'FIFO', label: 'First In, First Out' },
@@ -17,14 +20,32 @@ export class AppComponent {
     { value: 'PWA', label: 'Priority with Aging' },
   ];
 
-  distribution = 'ED';
+  distribution = 'LND';
   distributions = [
+    { value: 'LND', label: 'Логнормальний розподіл' },
     { value: 'ED', label: 'Експоненційний розподіл' },
     { value: 'UD', label: 'Рівномірний розподіл' },
-    { value: 'ND', label: 'Нормальний розподіл' },
-    { value: 'LND', label: 'Логнормальний розподіл' },
     { value: 'GWD', label: 'Розподіл Гнєденко Вейбула' },
     { value: 'PD', label: 'Розподіл Парето' },
     { value: 'CD', label: 'Розподіл Коші' },
   ];
+
+  selectedTab: number = 0;
+
+  updateChart(): void
+  {
+    this.charts.get(this.selectedTab)?.recalculate();
+  }
+
+  onTabChange(event: any): void {
+    this.updateChart();
+  }
+
+  onDisciplineChange(event: any): void {
+    this.updateChart();
+  }
+
+  onDistributionChange(event: any): void {
+    this.updateChart();
+  }
 }

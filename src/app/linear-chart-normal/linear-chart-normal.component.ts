@@ -16,11 +16,11 @@ Chart.register(
 );
 
 @Component({
-  selector: 'app-linear-chart',
-  templateUrl: './linear-chart.component.html',
+  selector: 'app-linear-normal-chart',
+  templateUrl: './linear-chart-normal.component.html',
   styleUrl: './linear-chart.component.scss'
 })
-export class LinearChartComponent {
+export class LinearChartNormalComponent {
   @ViewChild('acquisitions', { static: true }) acquisitions!: ElementRef<HTMLCanvasElement>;
 
   @Input() discipline: string = '';
@@ -41,16 +41,7 @@ export class LinearChartComponent {
   mu: number = 5;
   lambda: number = 4;
 
-  lndMean: number = 0.5;
-  lndDispersion: number = 0.2;
-
   constructor(private metricsService: MetricsService) {
-  }
-
-  ngOnInit(): void {
-    setTimeout(()=>{
-      this.createLineChart();
-    }, 0)
   }
 
   ngAfterViewInit(): void {
@@ -74,6 +65,7 @@ export class LinearChartComponent {
   createLineChart(): void {
     const ctx = this.acquisitions.nativeElement;
 
+// Если график уже существует, уничтожаем его
     if (this.chart) {
       this.chart.destroy();
     }
@@ -86,38 +78,28 @@ export class LinearChartComponent {
       case 'FIFO_ED_1': {
         for (let i = this.minLambda; i <= this.maxLambda; i+=0.125) {
           labels.push(Number.isInteger(i) ? i : '');
-          data.push(this.metricsService.calculateQueueLength_FIFO_ED_NUM_M(i, this.mu));
+          data.push(this.metricsService.calculateQueueLength_FIFO_ED_NUM_M(i, this.mu));  // Вычисление значения y для каждого x
         }
         break;
       }
       case 'FIFO_ED_2': {
         for (let i = this.minN; i <= this.maxN; i+=0.25) {
           labels.push(Number.isInteger(i) ? i : '');
-          data.push(this.metricsService.calculateQueueLength_FIFO_ED_NUM_CDF(this.lambda, this.mu, i));
+          data.push(this.metricsService.calculateQueueLength_FIFO_ED_NUM_CDF(this.lambda, this.mu, i));  // Вычисление значения y для каждого x
         }
         break;
       }
       case 'FIFO_ED_3': {
         for (let i = this.minLambda; i <= this.maxLambda; i+=0.125) {
           labels.push(Number.isInteger(i) ? i : '');
-          data.push(this.metricsService.calculateQueueLength_FIFO_ED_TIME_M(i, this.mu));
+          data.push(this.metricsService.calculateQueueLength_FIFO_ED_TIME_M(i, this.mu));  // Вычисление значения y для каждого x
         }
         break;
       }
       case 'FIFO_ED_4': {
         for (let i = this.minT; i <= this.maxT; i+=0.25) {
           labels.push(Number.isInteger(i) ? i : '');
-          data.push(this.metricsService.calculateQueueLength_FIFO_ED_TIME_CDF(this.lambda, this.mu, i));
-        }
-        break;
-      }
-      case 'FIFO_LND_1': {
-        for (let i = this.minLambda; i <= this.maxLambda; i += 0.125) {
-          labels.push(Number.isInteger(i) ? i : '');
-          const dispersion = (Math.exp(this.lndDispersion) - 1) * Math.exp(2 * this.lndMean + this.lndDispersion);
-          const mean = Math.exp(this.lndMean + (this.lndDispersion / 2))
-          data.push(this.metricsService.calculateQueueLength_FIFO_LND_NUM_M(i, dispersion, mean));
-          console.log(i * mean, i, dispersion, mean);
+          data.push(this.metricsService.calculateQueueLength_FIFO_ED_TIME_CDF(this.lambda, this.mu, i));  // Вычисление значения y для каждого x
         }
         break;
       }
@@ -175,9 +157,6 @@ export class LinearChartComponent {
       }
       case 'FIFO_ED_4': {
         return ['Час', 'Ймовірність'];
-      }
-      case 'FIFO_LND_1': {
-        return ['Лямбда', 'Кількість у черзі'];
       }
     }
     return ['x', 'y'];

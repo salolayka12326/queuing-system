@@ -10,7 +10,7 @@
         <div class="col-3">
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Дисципліна</mat-label>
-            <mat-select [(ngModel)]="discipline">
+            <mat-select [(ngModel)]="discipline" (selectionChange)="onDisciplineChange($event)">
               <mat-option *ngFor="let option of disciplines" [value]="option.value">
                 {{ option.label }}
               </mat-option>
@@ -20,7 +20,7 @@
         <div class="col-3">
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Розподіл</mat-label>
-            <mat-select [(ngModel)]="distribution">
+            <mat-select [(ngModel)]="distribution" (selectionChange)="onDistributionChange($event)">
               <mat-option *ngFor="let option of distributions" [value]="option.value">
                 {{ option.label }}
               </mat-option>
@@ -28,18 +28,28 @@
           </mat-form-field>
         </div>
         <div class="col-6 d-flex align-items-center justify-content-end">
-          <button mat-raised-button color="primary" (click)="appLineChart.recalculate()">Розрахунок</button>
+          <button mat-raised-button color="primary" (click)="updateChart()">Розрахунок</button>
         </div>
 
       </div>
     </mat-toolbar>
   <div class="content">
-    <mat-tab-group>
-      <mat-tab label="Кількість у черзі" class="overflow-hidden"> <app-linear-chart #appLineChart></app-linear-chart> </mat-tab>
-      <mat-tab label="Час очікування"> Content </mat-tab>
-      <mat-tab label="Час в системі"> Content </mat-tab>
-      <mat-tab label="Порожня система"> Content </mat-tab>
-      <mat-tab label="Продуктивність"> Content </mat-tab>
+    <mat-tab-group [(selectedIndex)]="selectedTab" (selectedTabChange)="onTabChange($event)">
+      <mat-tab label="Кількість у черзі (M)" class="overflow-hidden">
+        <app-linear-chart [discipline]="discipline" [distribution]="distribution" [metricNumber]="1" #appLineChart></app-linear-chart>
+      </mat-tab>
+
+      <mat-tab label="Кількість у черзі (CDF)" class="overflow-hidden">
+        <app-linear-chart [discipline]="discipline" [distribution]="distribution" [metricNumber]="2" #appLineChart></app-linear-chart>
+      </mat-tab>
+
+      <mat-tab label="Час очікування у черзі (M)" class="overflow-hidden">
+        <app-linear-chart [discipline]="discipline" [distribution]="distribution" [metricNumber]="3" #appLineChart></app-linear-chart>
+      </mat-tab>
+
+      <mat-tab label="Час очікування у черзі (CDF)" class="overflow-hidden">
+        <app-linear-chart [discipline]="discipline" [distribution]="distribution" [metricNumber]="4" #appLineChart></app-linear-chart>
+      </mat-tab>
     </mat-tab-group>
   </div>
   </div>
