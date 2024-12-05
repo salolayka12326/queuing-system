@@ -42,6 +42,7 @@ export class LinearChartComponent {
   lambda: number = 4;
 
   simulationTime: number = 100;
+  simulationNum: number = 100;
 
   lndMean: number = 0;
   lndDispersion: number = 1;
@@ -111,7 +112,28 @@ export class LinearChartComponent {
       case 'FIFO_LND_1': {
         for (let i = this.minLambda; i <= this.maxLambda; i+=0.1) {
           labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateQueue_LND_NUM_M(i, this.lndMean, this.lndDispersion, this.simulationTime));
+          data.push(this.metricsService.simulateQueue_LND_NUM_M(i, this.lndMean, this.lndDispersion, this.simulationTime, this.simulationNum));
+        }
+        break;
+      }
+      case 'FIFO_LND_2': {
+        for (let i = this.minN; i <= this.maxN; i++) {
+          labels.push(i.toFixed(2));
+          data.push(this.metricsService.simulateMG1Queue_LND_NUM_CDF(this.lambda, this.lndMean, this.lndDispersion, this.simulationTime, i, 1000));
+        }
+        break;
+      }
+      case 'FIFO_LND_3': {
+        for (let i = this.minLambda; i <= this.maxLambda; i+=0.1) {
+          labels.push(i.toFixed(2));
+          data.push(this.metricsService.simulateQueue_LND_TIME_M(i, this.lndMean, this.lndDispersion, this.simulationTime, 1000));
+        }
+        break;
+      }
+      case 'FIFO_LND_4': {
+        for (let i = this.minT; i <= this.maxT; i++) {
+          labels.push(i.toFixed(2));
+          data.push(this.metricsService.simulateMG1Queue_LND_TIME_CDF(this.lambda, this.lndMean, this.lndDispersion, this.simulationTime, i, 1000));
         }
         break;
       }
@@ -172,6 +194,15 @@ export class LinearChartComponent {
       }
       case 'FIFO_LND_1': {
         return ['Лямбда', 'Кількість у черзі'];
+      }
+      case 'FIFO_LND_2': {
+        return ['Кількість у черзі', 'Ймовірність'];
+      }
+      case 'FIFO_LND_3': {
+        return ['Лямбда', 'Час'];
+      }
+      case 'FIFO_LND_4': {
+        return ['Час', 'Ймовірність'];
       }
     }
     return ['x', 'y'];
@@ -261,7 +292,7 @@ export class LinearChartComponent {
         this.maxT = 10;
 
         this.minLambda = 0;
-        this.maxLambda = 10;
+        this.maxLambda = 3;
 
         this.minN = 0;
         this.maxN = 30;
@@ -271,7 +302,64 @@ export class LinearChartComponent {
 
         this.simulationTime = 100;
 
-        this.lndMean = -1;
+        this.lndMean = -2;
+        this.lndDispersion = 1;
+        break;
+      }
+      case 'FIFO_LND_2': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 3;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 1;
+
+        this.simulationTime = 100;
+
+        this.lndMean = -2;
+        this.lndDispersion = 1;
+        break;
+      }
+      case 'FIFO_LND_3': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 3;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 4;
+
+        this.simulationTime = 100;
+
+        this.lndMean = -2;
+        this.lndDispersion = 1;
+        break;
+      }
+      case 'FIFO_LND_4': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 3;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 1;
+
+        this.simulationTime = 100;
+
+        this.lndMean = -2;
         this.lndDispersion = 1;
         break;
       }

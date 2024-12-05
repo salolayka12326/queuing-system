@@ -20,10 +20,10 @@ export class AppComponent {
     { value: 'PWA', label: 'Priority with Aging' },
   ];
 
-  distribution = 'LND';
+  distribution = 'ED';
   distributions = [
-    { value: 'LND', label: 'Логнормальний розподіл' },
     { value: 'ED', label: 'Експоненційний розподіл' },
+    { value: 'LND', label: 'Логнормальний розподіл' },
     { value: 'UD', label: 'Рівномірний розподіл' },
     { value: 'GWD', label: 'Розподіл Гнєденко Вейбула' },
     { value: 'PD', label: 'Розподіл Парето' },
@@ -39,16 +39,22 @@ export class AppComponent {
 
   onTabChange(event: any): void {
     this.charts.get(this.selectedTab)?.updateVales();
-    this.updateChart();
+    setTimeout(()=>{
+      this.updateChart();
+    }, 0)
   }
 
   onDisciplineChange(event: any): void {
     this.charts.get(this.selectedTab)?.updateVales();
-    this.updateChart();
+    setTimeout(()=>{
+      this.updateChart();
+    }, 1000)
   }
 
   onDistributionChange(event: any): void {
     this.charts.get(this.selectedTab)?.updateVales();
-    this.updateChart();
+    setTimeout(()=>{
+      this.updateChart();
+    }, 1000)
   }
 }
