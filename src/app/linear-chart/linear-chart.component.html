@@ -41,19 +41,25 @@
     </div>
     <div class="col-6" *ngIf="['FIFO_LND_1'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-form-field appearance="fill" class="w-100">
-        <mat-label>Логарифмічне середнє</mat-label>
-        <input matInput type="number" [(ngModel)]="lndMean" [min]="0" [max]="100" step="1" placeholder="Мю">
-        <mat-error *ngIf="lndMean < 0 || lndMean > 100">
+        <mat-label>Логарифмічне мю</mat-label>
+        <input matInput type="number" [(ngModel)]="lndMean" step="1" placeholder="Мю">
+      </mat-form-field>
+    </div>
+    <div class="col-6" *ngIf="['FIFO_LND_1'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Логарифмічна сігма</mat-label>
+        <input matInput type="number" [(ngModel)]="lndDispersion" [min]="0" [max]="100" step="1" placeholder="Мю">
+        <mat-error *ngIf="lndDispersion < 0 || lndDispersion > 100">
           0 ... 100
         </mat-error>
       </mat-form-field>
     </div>
     <div class="col-6" *ngIf="['FIFO_LND_1'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-form-field appearance="fill" class="w-100">
-        <mat-label>Логарифмічна дисперсія</mat-label>
-        <input matInput type="number" [(ngModel)]="lndDispersion" [min]="0" [max]="100" step="1" placeholder="Мю">
-        <mat-error *ngIf="lndDispersion < 0 || lndDispersion > 100">
-          0 ... 100
+        <mat-label>Час сімуляцii</mat-label>
+        <input matInput type="number" [(ngModel)]="simulationTime" [min]="0" [max]="1000" step="1" placeholder="Мю">
+        <mat-error *ngIf="simulationTime < 0 || simulationTime > 1000">
+          0 ... 1000
         </mat-error>
       </mat-form-field>
     </div>

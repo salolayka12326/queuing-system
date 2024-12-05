@@ -41,20 +41,17 @@ export class LinearChartComponent {
   mu: number = 5;
   lambda: number = 4;
 
-  lndMean: number = 0.5;
-  lndDispersion: number = 0.2;
+  simulationTime: number = 100;
+
+  lndMean: number = 0;
+  lndDispersion: number = 1;
 
   constructor(private metricsService: MetricsService) {
   }
 
-  ngOnInit(): void {
-    setTimeout(()=>{
-      this.createLineChart();
-    }, 0)
-  }
-
   ngAfterViewInit(): void {
     setTimeout(()=>{
+      this.updateVales();
       this.createLineChart();
     }, 0)
   }
@@ -112,12 +109,9 @@ export class LinearChartComponent {
         break;
       }
       case 'FIFO_LND_1': {
-        for (let i = this.minLambda; i <= this.maxLambda; i += 0.125) {
-          labels.push(Number.isInteger(i) ? i : '');
-          const dispersion = (Math.exp(this.lndDispersion) - 1) * Math.exp(2 * this.lndMean + this.lndDispersion);
-          const mean = Math.exp(this.lndMean + (this.lndDispersion / 2))
-          data.push(this.metricsService.calculateQueueLength_FIFO_LND_NUM_M(i, dispersion, mean));
-          console.log(i * mean, i, dispersion, mean);
+        for (let i = this.minLambda; i <= this.maxLambda; i+=0.1) {
+          labels.push(i.toFixed(2));
+          data.push(this.metricsService.simulateQueue_LND_NUM_M(i, this.lndMean, this.lndDispersion, this.simulationTime));
         }
         break;
       }
@@ -181,5 +175,106 @@ export class LinearChartComponent {
       }
     }
     return ['x', 'y'];
+  }
+
+  updateVales(): void {
+
+    switch (this.discipline+'_'+this.distribution+'_'+this.metricNumber) {
+      case 'FIFO_ED_1': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 10;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 4;
+
+        this.simulationTime = 100;
+
+        this.lndMean = 0;
+        this.lndDispersion = 1;
+        break;
+      }
+      case 'FIFO_ED_2': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 10;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 4;
+
+        this.simulationTime = 100;
+
+        this.lndMean = 0;
+        this.lndDispersion = 1;
+        break;
+      }
+      case 'FIFO_ED_3': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 10;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 4;
+
+        this.simulationTime = 100;
+
+        this.lndMean = 0;
+        this.lndDispersion = 1;
+        break;
+      }
+      case 'FIFO_ED_4': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 10;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 4;
+
+        this.simulationTime = 100;
+
+        this.lndMean = 0;
+        this.lndDispersion = 1;
+        break;
+      }
+      case 'FIFO_LND_1': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 10;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 4;
+
+        this.simulationTime = 100;
+
+        this.lndMean = -1;
+        this.lndDispersion = 1;
+        break;
+      }
+    }
   }
 }

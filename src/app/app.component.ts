@@ -38,14 +38,17 @@ export class AppComponent {
   }
 
   onTabChange(event: any): void {
+    this.charts.get(this.selectedTab)?.updateVales();
     this.updateChart();
   }
 
   onDisciplineChange(event: any): void {
+    this.charts.get(this.selectedTab)?.updateVales();
     this.updateChart();
   }
 
   onDistributionChange(event: any): void {
+    this.charts.get(this.selectedTab)?.updateVales();
     this.updateChart();
   }
 }
