@@ -21,11 +21,41 @@ Chart.register(
   styleUrl: './linear-chart.component.scss'
 })
 export class LinearChartComponent {
-  @ViewChild('acquisitions', { static: true }) acquisitions!: ElementRef<HTMLCanvasElement>;
+  private _discipline: string = '';
+  private _distribution: string = '';
+  private _metricNumber: number = 1;
 
-  @Input() discipline: string = '';
-  @Input() distribution: string = '';
-  @Input() metricNumber: number = 1;
+  @ViewChild('acquisitions', {static: true}) acquisitions!: ElementRef<HTMLCanvasElement>;
+
+  @Input()
+  set discipline(value: string) {
+    this._discipline = value;
+    this.updateVales();
+  }
+
+  get discipline(): string {
+    return this._discipline;
+  }
+
+  @Input()
+  set distribution(value: string) {
+    this._distribution = value;
+    this.updateVales();
+  }
+
+  get distribution(): string {
+    return this._distribution;
+  }
+
+  @Input()
+  set metricNumber(value: number) {
+    this._metricNumber = value;
+    this.updateVales();
+  }
+
+  get metricNumber(): number {
+    return this._metricNumber;
+  }
 
   private chart: Chart | undefined;
 
@@ -47,12 +77,18 @@ export class LinearChartComponent {
   lndMean: number = 0;
   lndDispersion: number = 1;
 
+  gwdLambda: number = 1;
+  gwdKappa: number = 0;
+  gwdGamma: number = 1;
+
+  udMin: number = 0;
+  udMax: number = 1;
+
   constructor(private metricsService: MetricsService) {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(()=>{
-      this.updateVales();
+    setTimeout(() => {
       this.createLineChart();
     }, 0)
   }
@@ -64,7 +100,7 @@ export class LinearChartComponent {
   }
 
   recalculate() {
-    setTimeout(()=>{
+    setTimeout(() => {
       this.createLineChart();
     }, 0)
   }
@@ -79,38 +115,37 @@ export class LinearChartComponent {
     const labels = [];
     const data = [];
 
-    console.log(this.discipline+'_'+this.distribution+'_'+this.metricNumber);
-    switch (this.discipline+'_'+this.distribution+'_'+this.metricNumber) {
+    switch (this.discipline + '_' + this.distribution + '_' + this.metricNumber) {
       case 'FIFO_ED_1': {
-        for (let i = this.minLambda; i <= this.maxLambda; i+=0.125) {
+        for (let i = this.minLambda; i <= this.maxLambda; i += 0.125) {
           labels.push(Number.isInteger(i) ? i : '');
           data.push(this.metricsService.calculateQueueLength_FIFO_ED_NUM_M(i, this.mu));
         }
         break;
       }
       case 'FIFO_ED_2': {
-        for (let i = this.minN; i <= this.maxN; i+=0.25) {
+        for (let i = this.minN; i <= this.maxN; i += 0.25) {
           labels.push(Number.isInteger(i) ? i : '');
           data.push(this.metricsService.calculateQueueLength_FIFO_ED_NUM_CDF(this.lambda, this.mu, i));
         }
         break;
       }
       case 'FIFO_ED_3': {
-        for (let i = this.minLambda; i <= this.maxLambda; i+=0.125) {
+        for (let i = this.minLambda; i <= this.maxLambda; i += 0.125) {
           labels.push(Number.isInteger(i) ? i : '');
           data.push(this.metricsService.calculateQueueLength_FIFO_ED_TIME_M(i, this.mu));
         }
         break;
       }
       case 'FIFO_ED_4': {
-        for (let i = this.minT; i <= this.maxT; i+=0.25) {
+        for (let i = this.minT; i <= this.maxT; i += 0.25) {
           labels.push(Number.isInteger(i) ? i : '');
           data.push(this.metricsService.calculateQueueLength_FIFO_ED_TIME_CDF(this.lambda, this.mu, i));
         }
         break;
       }
       case 'FIFO_LND_1': {
-        for (let i = this.minLambda; i <= this.maxLambda; i+=0.1) {
+        for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
           labels.push(i.toFixed(2));
           data.push(this.metricsService.simulateQueue_LND_NUM_M(i, this.lndMean, this.lndDispersion, this.simulationTime, this.simulationNum));
         }
@@ -119,26 +154,53 @@ export class LinearChartComponent {
       case 'FIFO_LND_2': {
         for (let i = this.minN; i <= this.maxN; i++) {
           labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateMG1Queue_LND_NUM_CDF(this.lambda, this.lndMean, this.lndDispersion, this.simulationTime, i, 1000));
+          data.push(this.metricsService.simulateMG1Queue_LND_NUM_CDF(this.lambda, this.lndMean, this.lndDispersion, this.simulationTime, i, this.simulationNum));
         }
         break;
       }
       case 'FIFO_LND_3': {
-        for (let i = this.minLambda; i <= this.maxLambda; i+=0.1) {
+        for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
           labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateQueue_LND_TIME_M(i, this.lndMean, this.lndDispersion, this.simulationTime, 1000));
+          data.push(this.metricsService.simulateQueue_LND_TIME_M(i, this.lndMean, this.lndDispersion, this.simulationTime, this.simulationNum));
         }
         break;
       }
       case 'FIFO_LND_4': {
         for (let i = this.minT; i <= this.maxT; i++) {
           labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateMG1Queue_LND_TIME_CDF(this.lambda, this.lndMean, this.lndDispersion, this.simulationTime, i, 1000));
+          data.push(this.metricsService.simulateMG1Queue_LND_TIME_CDF(this.lambda, this.lndMean, this.lndDispersion, this.simulationTime, i, this.simulationNum));
+        }
+        break;
+      }
+      case 'FIFO_GWD_1': {
+        for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
+          labels.push(i.toFixed(2));
+          data.push(this.metricsService.simulateQueue_GWM_NUM_M(i, this.gwdLambda, this.gwdKappa, this.gwdGamma, this.simulationTime, this.simulationNum));
+        }
+        break;
+      }
+      case 'FIFO_GWD_2': {
+        for (let i = this.minN; i <= this.maxN; i++) {
+          labels.push(i.toFixed(2));
+          data.push(this.metricsService.simulateMG1Queue_GWD_NUM_CDF(this.lambda, this.gwdLambda, this.gwdKappa, this.gwdGamma, this.simulationTime, i, this.simulationNum));
+        }
+        break;
+      }
+      case 'FIFO_GWD_3': {
+        for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
+          labels.push(i.toFixed(2));
+          data.push(this.metricsService.simulateQueue_GWD_TIME_M(i, this.gwdLambda, this.gwdKappa, this.gwdGamma, this.simulationTime, this.simulationNum));
+        }
+        break;
+      }
+      case 'FIFO_GWD_4': {
+        for (let i = this.minT; i <= this.maxT; i++) {
+          labels.push(i.toFixed(2));
+          data.push(this.metricsService.simulateMG1Queue_GWD_TIME_CDF(this.lambda, this.gwdLambda, this.gwdKappa, this.gwdGamma, this.simulationTime, i, this.simulationNum));
         }
         break;
       }
     }
-
 
 
     this.chart = new Chart(
@@ -177,9 +239,8 @@ export class LinearChartComponent {
     );
   }
 
-  getLabels(): string[]
-  {
-    switch (this.discipline+'_'+this.distribution+'_'+this.metricNumber) {
+  getLabels(): string[] {
+    switch (this.discipline + '_' + this.distribution + '_' + this.metricNumber) {
       case 'FIFO_ED_1': {
         return ['Лямбда', 'Кількість у черзі'];
       }
@@ -202,6 +263,30 @@ export class LinearChartComponent {
         return ['Лямбда', 'Час'];
       }
       case 'FIFO_LND_4': {
+        return ['Час', 'Ймовірність'];
+      }
+      case 'FIFO_GWD_1': {
+        return ['Лямбда', 'Кількість у черзі'];
+      }
+      case 'FIFO_GWD_2': {
+        return ['Кількість у черзі', 'Ймовірність'];
+      }
+      case 'FIFO_GWD_3': {
+        return ['Лямбда', 'Час'];
+      }
+      case 'FIFO_GWD_4': {
+        return ['Час', 'Ймовірність'];
+      }
+      case 'FIFO_UD_1': {
+        return ['Лямбда', 'Кількість у черзі'];
+      }
+      case 'FIFO_UD_2': {
+        return ['Кількість у черзі', 'Ймовірність'];
+      }
+      case 'FIFO_UD_3': {
+        return ['Лямбда', 'Час'];
+      }
+      case 'FIFO_UD_4': {
         return ['Час', 'Ймовірність'];
       }
     }
@@ -210,7 +295,7 @@ export class LinearChartComponent {
 
   updateVales(): void {
 
-    switch (this.discipline+'_'+this.distribution+'_'+this.metricNumber) {
+    switch (this.discipline + '_' + this.distribution + '_' + this.metricNumber) {
       case 'FIFO_ED_1': {
         this.minT = 0;
         this.maxT = 10;
@@ -361,6 +446,162 @@ export class LinearChartComponent {
 
         this.lndMean = -2;
         this.lndDispersion = 1;
+        break;
+      }
+      case 'FIFO_GWD_1': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 3;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 0.5;
+
+        this.simulationTime = 100;
+
+        this.gwdLambda = 1;
+        this.gwdKappa = 1;
+        this.gwdGamma = 0;
+        break;
+      }
+      case 'FIFO_GWD_2': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 3;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 0.5;
+
+        this.simulationTime = 100;
+
+        this.gwdLambda = 1;
+        this.gwdKappa = 1;
+        this.gwdGamma = 0;
+        break;
+      }
+      case 'FIFO_GWD_3': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 3;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 0.5;
+
+        this.simulationTime = 100;
+
+        this.gwdLambda = 1;
+        this.gwdKappa = 1;
+        this.gwdGamma = 0;
+        break;
+      }
+      case 'FIFO_GWD_4': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 3;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 0.5;
+
+        this.simulationTime = 100;
+
+        this.gwdLambda = 1;
+        this.gwdKappa = 1;
+        this.gwdGamma = 0;
+        break;
+      }
+      case 'FIFO_UD_1': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 3;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 0.5;
+
+        this.simulationTime = 100;
+
+        this.udMin =0;
+        this.udMax = 1;
+        break;
+      }
+      case 'FIFO_UD_2': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 3;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 0.5;
+
+        this.simulationTime = 100;
+
+        this.udMin =0;
+        this.udMax = 1;
+        break;
+      }
+      case 'FIFO_UD_3': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 3;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 0.5;
+
+        this.simulationTime = 100;
+
+        this.udMin =0;
+        this.udMax = 1;
+        break;
+      }
+      case 'FIFO_UD_4': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 3;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 0.5;
+
+        this.simulationTime = 100;
+
+        this.udMin =0;
+        this.udMax = 1;
         break;
       }
     }

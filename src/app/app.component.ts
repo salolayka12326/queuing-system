@@ -38,21 +38,18 @@ export class AppComponent {
   }
 
   onTabChange(event: any): void {
-    this.charts.get(this.selectedTab)?.updateVales();
     setTimeout(()=>{
       this.updateChart();
     }, 0)
   }
 
   onDisciplineChange(event: any): void {
-    this.charts.get(this.selectedTab)?.updateVales();
     setTimeout(()=>{
       this.updateChart();
     }, 1000)
   }
 
   onDistributionChange(event: any): void {
-    this.charts.get(this.selectedTab)?.updateVales();
     setTimeout(()=>{
       this.updateChart();
     }, 1000)
