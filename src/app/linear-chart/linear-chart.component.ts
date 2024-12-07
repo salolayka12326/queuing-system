@@ -57,6 +57,8 @@ export class LinearChartComponent {
     return this._metricNumber;
   }
 
+  spinner: boolean = true;
+
   private chart: Chart | undefined;
 
   minT: number = 0;
@@ -84,6 +86,11 @@ export class LinearChartComponent {
   udMin: number = 0;
   udMax: number = 1;
 
+  bdMin: number = 0;
+  bdMax: number = 1;
+  bdAlpha: number = 0.8;
+  bdBeta: number = 0.8;
+
   constructor(private metricsService: MetricsService) {
   }
 
@@ -100,171 +107,211 @@ export class LinearChartComponent {
   }
 
   recalculate() {
+    this.spinner = true
     setTimeout(() => {
       this.createLineChart();
     }, 0)
   }
 
   createLineChart(): void {
-    const ctx = this.acquisitions.nativeElement;
+    this.spinner = true
+    try {
+      const ctx = this.acquisitions.nativeElement;
 
-    if (this.chart) {
-      this.chart.destroy();
-    }
+      if (this.chart) {
+        this.chart.destroy();
+      }
 
-    const labels = [];
-    const data = [];
+      const labels = [];
+      const data = [];
 
-    switch (this.discipline + '_' + this.distribution + '_' + this.metricNumber) {
-      case 'FIFO_ED_1': {
-        for (let i = this.minLambda; i <= this.maxLambda; i += 0.125) {
-          labels.push(Number.isInteger(i) ? i : '');
-          data.push(this.metricsService.calculateQueueLength_FIFO_ED_NUM_M(i, this.mu));
+      switch (this.discipline + '_' + this.distribution + '_' + this.metricNumber) {
+        case 'FIFO_ED_1': {
+          for (let i = this.minLambda; i <= this.maxLambda; i += 0.125) {
+            labels.push(Number.isInteger(i) ? i : '');
+            data.push(this.metricsService.calculateQueueLength_FIFO_ED_NUM_M(i, this.mu));
+          }
+          break;
         }
-        break;
-      }
-      case 'FIFO_ED_2': {
-        for (let i = this.minN; i <= this.maxN; i += 0.25) {
-          labels.push(Number.isInteger(i) ? i : '');
-          data.push(this.metricsService.calculateQueueLength_FIFO_ED_NUM_CDF(this.lambda, this.mu, i));
+        case 'FIFO_ED_2': {
+          for (let i = this.minN; i <= this.maxN; i += 0.25) {
+            labels.push(Number.isInteger(i) ? i : '');
+            data.push(this.metricsService.calculateQueueLength_FIFO_ED_NUM_CDF(this.lambda, this.mu, i));
+          }
+          break;
         }
-        break;
-      }
-      case 'FIFO_ED_3': {
-        for (let i = this.minLambda; i <= this.maxLambda; i += 0.125) {
-          labels.push(Number.isInteger(i) ? i : '');
-          data.push(this.metricsService.calculateQueueLength_FIFO_ED_TIME_M(i, this.mu));
+        case 'FIFO_ED_3': {
+          for (let i = this.minLambda; i <= this.maxLambda; i += 0.125) {
+            labels.push(Number.isInteger(i) ? i : '');
+            data.push(this.metricsService.calculateQueueLength_FIFO_ED_TIME_M(i, this.mu));
+          }
+          break;
         }
-        break;
-      }
-      case 'FIFO_ED_4': {
-        for (let i = this.minT; i <= this.maxT; i += 0.25) {
-          labels.push(Number.isInteger(i) ? i : '');
-          data.push(this.metricsService.calculateQueueLength_FIFO_ED_TIME_CDF(this.lambda, this.mu, i));
+        case 'FIFO_ED_4': {
+          for (let i = this.minT; i <= this.maxT; i += 0.25) {
+            labels.push(Number.isInteger(i) ? i : '');
+            data.push(this.metricsService.calculateQueueLength_FIFO_ED_TIME_CDF(this.lambda, this.mu, i));
+          }
+          break;
         }
-        break;
-      }
-      case 'FIFO_LND_1': {
-        for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
-          labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateQueue_LND_NUM_M(i, this.lndMean, this.lndDispersion, this.simulationTime, this.simulationNum));
+        case 'FIFO_LND_1': {
+          for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateQueue_LND_NUM_M(i, this.lndMean, this.lndDispersion, this.simulationTime, this.simulationNum));
+          }
+          break;
         }
-        break;
-      }
-      case 'FIFO_LND_2': {
-        for (let i = this.minN; i <= this.maxN; i++) {
-          labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateMG1Queue_LND_NUM_CDF(this.lambda, this.lndMean, this.lndDispersion, this.simulationTime, i, this.simulationNum));
+        case 'FIFO_LND_2': {
+          for (let i = this.minN; i <= this.maxN; i++) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateMG1Queue_LND_NUM_CDF(this.lambda, this.lndMean, this.lndDispersion, this.simulationTime, i, this.simulationNum));
+          }
+          break;
         }
-        break;
-      }
-      case 'FIFO_LND_3': {
-        for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
-          labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateQueue_LND_TIME_M(i, this.lndMean, this.lndDispersion, this.simulationTime, this.simulationNum));
+        case 'FIFO_LND_3': {
+          for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateQueue_LND_TIME_M(i, this.lndMean, this.lndDispersion, this.simulationTime, this.simulationNum));
+          }
+          break;
         }
-        break;
-      }
-      case 'FIFO_LND_4': {
-        for (let i = this.minT; i <= this.maxT; i++) {
-          labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateMG1Queue_LND_TIME_CDF(this.lambda, this.lndMean, this.lndDispersion, this.simulationTime, i, this.simulationNum));
+        case 'FIFO_LND_4': {
+          for (let i = this.minT; i <= this.maxT; i++) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateMG1Queue_LND_TIME_CDF(this.lambda, this.lndMean, this.lndDispersion, this.simulationTime, i, this.simulationNum));
+          }
+          break;
         }
-        break;
-      }
-      case 'FIFO_GWD_1': {
-        for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
-          labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateQueue_GWD_NUM_M(i, this.gwdLambda, this.gwdKappa, this.gwdGamma, this.simulationTime, this.simulationNum));
+        case 'FIFO_GWD_1': {
+          for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateQueue_GWD_NUM_M(i, this.gwdLambda, this.gwdKappa, this.gwdGamma, this.simulationTime, this.simulationNum));
+          }
+          break;
         }
-        break;
-      }
-      case 'FIFO_GWD_2': {
-        for (let i = this.minN; i <= this.maxN; i++) {
-          labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateMG1Queue_GWD_NUM_CDF(this.lambda, this.gwdLambda, this.gwdKappa, this.gwdGamma, this.simulationTime, i, this.simulationNum));
+        case 'FIFO_GWD_2': {
+          for (let i = this.minN; i <= this.maxN; i++) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateMG1Queue_GWD_NUM_CDF(this.lambda, this.gwdLambda, this.gwdKappa, this.gwdGamma, this.simulationTime, i, this.simulationNum));
+          }
+          break;
         }
-        break;
-      }
-      case 'FIFO_GWD_3': {
-        for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
-          labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateQueue_GWD_TIME_M(i, this.gwdLambda, this.gwdKappa, this.gwdGamma, this.simulationTime, this.simulationNum));
+        case 'FIFO_GWD_3': {
+          for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateQueue_GWD_TIME_M(i, this.gwdLambda, this.gwdKappa, this.gwdGamma, this.simulationTime, this.simulationNum));
+          }
+          break;
         }
-        break;
-      }
-      case 'FIFO_GWD_4': {
-        for (let i = this.minT; i <= this.maxT; i++) {
-          labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateMG1Queue_GWD_TIME_CDF(this.lambda, this.gwdLambda, this.gwdKappa, this.gwdGamma, this.simulationTime, i, this.simulationNum));
+        case 'FIFO_GWD_4': {
+          for (let i = this.minT; i <= this.maxT; i++) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateMG1Queue_GWD_TIME_CDF(this.lambda, this.gwdLambda, this.gwdKappa, this.gwdGamma, this.simulationTime, i, this.simulationNum));
+          }
+          break;
         }
-        break;
-      }
-      case 'FIFO_UD_1': {
-        for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
-          labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateQueue_UD_NUM_M(i, this.udMin, this.udMax, this.simulationTime, this.simulationNum));
+        case 'FIFO_UD_1': {
+          for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateQueue_UD_NUM_M(i, this.udMin, this.udMax, this.simulationTime, this.simulationNum));
+          }
+          break;
         }
-        break;
-      }
-      case 'FIFO_UD_2': {
-        for (let i = this.minN; i <= this.maxN; i++) {
-          labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateMG1Queue_UD_NUM_CDF(this.lambda, this.udMin, this.udMax, this.simulationTime, i, this.simulationNum));
+        case 'FIFO_UD_2': {
+          for (let i = this.minN; i <= this.maxN; i++) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateMG1Queue_UD_NUM_CDF(this.lambda, this.udMin, this.udMax, this.simulationTime, i, this.simulationNum));
+          }
+          break;
         }
-        break;
-      }
-      case 'FIFO_UD_3': {
-        for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
-          labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateQueue_UD_TIME_M(i, this.udMin, this.udMax, this.simulationTime, this.simulationNum));
+        case 'FIFO_UD_3': {
+          for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateQueue_UD_TIME_M(i, this.udMin, this.udMax, this.simulationTime, this.simulationNum));
+          }
+          break;
         }
-        break;
-      }
-      case 'FIFO_UD_4': {
-        for (let i = this.minT; i <= this.maxT; i++) {
-          labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateMG1Queue_UD_TIME_CDF(this.lambda, this.udMin, this.udMax, this.simulationTime, i, this.simulationNum));
+        case 'FIFO_UD_4': {
+          for (let i = this.minT; i <= this.maxT; i++) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateMG1Queue_UD_TIME_CDF(this.lambda, this.udMin, this.udMax, this.simulationTime, i, this.simulationNum));
+          }
+          break;
         }
-        break;
+        case 'FIFO_BD_1': {
+          for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateQueue_BD_NUM_M(i, this.bdAlpha, this.bdBeta, this.bdMin, this.bdMax, this.simulationTime, this.simulationNum));
+          }
+          break;
+        }
+        case 'FIFO_BD_2': {
+          for (let i = this.minN; i <= this.maxN; i++) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateMG1Queue_BD_NUM_CDF(this.lambda, this.bdAlpha, this.bdBeta, this.bdMin, this.bdMax, this.simulationTime, i, this.simulationNum));
+          }
+          break;
+        }
+        case 'FIFO_BD_3': {
+          for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateQueue_BD_TIME_M(i, this.bdAlpha, this.bdBeta, this.bdMin, this.bdMax, this.simulationTime, this.simulationNum));
+          }
+          break;
+        }
+        case 'FIFO_BD_4': {
+          for (let i = this.minT; i <= this.maxT; i++) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateMG1Queue_BD_TIME_CDF(this.lambda, this.bdAlpha, this.bdBeta, this.bdMin, this.bdMax, this.simulationTime, i, this.simulationNum));
+          }
+          break;
+        }
       }
-    }
 
 
-    this.chart = new Chart(
-      ctx,
-      {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              data: data,  // Данные для оси Y
-              borderColor: 'rgb(103,58,183)',  // Цвет линии
-              backgroundColor: 'rgb(103,58,183)',  // Цвет фона
-              fill: false,  // Заполнение под линией
-              tension: 0.4  // Сглаживание линии
-            }
-          ]
-        },
-        options: {
-          scales: {
-            x: {
-              title: {
-                display: true,
-                text: this.getLabels()[0]  // Подпись для оси X
+      this.chart = new Chart(
+        ctx,
+        {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                data: data,  // Данные для оси Y
+                borderColor: 'rgb(103,58,183)',  // Цвет линии
+                backgroundColor: 'rgb(103,58,183)',  // Цвет фона
+                fill: false,  // Заполнение под линией
+                tension: 0.4  // Сглаживание линии
               }
-            },
-            y: {
-              title: {
-                display: true,
-                text: this.getLabels()[1]  // Подпись для оси Y
+            ]
+          },
+          options: {
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: this.getLabels()[0]  // Подпись для оси X
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: this.getLabels()[1]  // Подпись для оси Y
+                }
               }
             }
           }
         }
-      }
-    );
+      );
+    } catch (e) {
+      setTimeout(()=> {
+        this.spinner = false;
+      }, 1000)
+    } finally {
+      setTimeout(()=> {
+        this.spinner = false;
+      }, 1000)
+    }
   }
 
   getLabels(): string[] {
@@ -317,12 +364,24 @@ export class LinearChartComponent {
       case 'FIFO_UD_4': {
         return ['Час', 'Ймовірність'];
       }
+      case 'FIFO_BD_1': {
+        return ['Лямбда', 'Кількість у черзі'];
+      }
+      case 'FIFO_BD_2': {
+        return ['Кількість у черзі', 'Ймовірність'];
+      }
+      case 'FIFO_BD_3': {
+        return ['Лямбда', 'Час'];
+      }
+      case 'FIFO_BD_4': {
+        return ['Час', 'Ймовірність'];
+      }
     }
     return ['x', 'y'];
   }
 
   updateVales(): void {
-
+    this.spinner = true;
     switch (this.discipline + '_' + this.distribution + '_' + this.metricNumber) {
       case 'FIFO_ED_1': {
         this.minT = 0;
@@ -630,6 +689,27 @@ export class LinearChartComponent {
 
         this.udMin =0;
         this.udMax = 1;
+        break;
+      }
+      case 'FIFO_BD_1': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 3;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 0.5;
+
+        this.simulationTime = 100;
+
+        this.bdMin =0;
+        this.bdMax = 1;
+        this.bdAlpha =0.8;
+        this.bdBeta = 0.8;
         break;
       }
     }

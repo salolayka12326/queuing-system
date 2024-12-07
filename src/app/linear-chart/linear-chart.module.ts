@@ -5,6 +5,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {MatSliderModule} from "@angular/material/slider";
+import {MatProgressSpinnerModule, MatSpinner} from "@angular/material/progress-spinner";
 
 
 
@@ -20,7 +21,9 @@ import {MatSliderModule} from "@angular/material/slider";
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    MatSliderModule
+    MatSliderModule,
+    MatSpinner,
+    MatProgressSpinnerModule
   ]
 })
 export class LinearChartModule { }

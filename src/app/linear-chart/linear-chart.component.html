@@ -1,27 +1,27 @@
 <div class="p-3">
   <div class="row m-0 w-100">
-    <div class="col-6" *ngIf="['FIFO_ED_1', 'FIFO_ED_3', 'FIFO_LND_1', 'FIFO_LND_3', 'FIFO_GWD_1', 'FIFO_GWD_3', 'FIFO_UD_1', 'FIFO_UD_3'].includes(discipline+'_'+distribution+'_'+metricNumber)">
-      <mat-label>Лямбда (інтенсивність надходження) від {{minLambda}} до {{maxLambda}}</mat-label>
+    <div class="col-3" *ngIf="['FIFO_ED_1', 'FIFO_ED_3', 'FIFO_LND_1', 'FIFO_LND_3', 'FIFO_GWD_1', 'FIFO_GWD_3', 'FIFO_UD_1', 'FIFO_UD_3', 'FIFO_BD_1', 'FIFO_BD_3'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+      <mat-label>Лямбда (інтенсивність) від {{minLambda}} до {{maxLambda}}</mat-label>
       <mat-slider min="0" max="100" class="w-100">
         <input [(ngModel)]="minLambda"  matSliderStartThumb>
         <input [(ngModel)]="maxLambda" matSliderEndThumb>
       </mat-slider>
     </div>
-    <div class="col-6" *ngIf="['FIFO_ED_4', 'FIFO_LND_4', 'FIFO_GWD_4', 'FIFO_UD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-3" *ngIf="['FIFO_ED_4', 'FIFO_LND_4', 'FIFO_GWD_4', 'FIFO_UD_4', 'FIFO_BD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-label>Час від {{minT}} до {{maxT}}</mat-label>
       <mat-slider min="0" max="100" class="w-100">
         <input [(ngModel)]="minT"  matSliderStartThumb>
         <input [(ngModel)]="maxT" matSliderEndThumb>
       </mat-slider>
     </div>
-    <div class="col-6" *ngIf="['FIFO_ED_2', 'FIFO_LND_2', 'FIFO_GWD_2', 'FIFO_UD_2'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-3" *ngIf="['FIFO_ED_2', 'FIFO_LND_2', 'FIFO_GWD_2', 'FIFO_UD_2', 'FIFO_BD_2'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-label>Кількість людей у черзі від {{minN}} до {{maxN}}</mat-label>
       <mat-slider min="0" max="100" class="w-100">
         <input [(ngModel)]="minN"  matSliderStartThumb>
         <input [(ngModel)]="maxN" matSliderEndThumb>
       </mat-slider>
     </div>
-    <div class="col-6" *ngIf="['FIFO_ED_1', 'FIFO_ED_2', 'FIFO_ED_3', 'FIFO_ED_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-3" *ngIf="['FIFO_ED_1', 'FIFO_ED_2', 'FIFO_ED_3', 'FIFO_ED_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Мю (інтенсивність обслуговування)</mat-label>
         <input matInput type="number" [(ngModel)]="mu" [min]="1" [max]="100" step="1" placeholder="Мю">
@@ -30,7 +30,7 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="col-6" *ngIf="['FIFO_ED_2', 'FIFO_ED_4', 'FIFO_LND_2', 'FIFO_LND_4', 'FIFO_GWD_2', 'FIFO_GWD_4', 'FIFO_UD_2', 'FIFO_UD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-3" *ngIf="['FIFO_ED_2', 'FIFO_ED_4', 'FIFO_LND_2', 'FIFO_LND_4', 'FIFO_GWD_2', 'FIFO_GWD_4', 'FIFO_UD_2', 'FIFO_UD_4', 'FIFO_BD_2', 'FIFO_BD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Лямбда (інтенсивність надходження)</mat-label>
         <input matInput type="number" [(ngModel)]="lambda" [min]="0" [max]="100" step="1" placeholder="Мю">
@@ -39,13 +39,13 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="col-6" *ngIf="['FIFO_LND_1', 'FIFO_LND_2', 'FIFO_LND_3', 'FIFO_LND_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-3" *ngIf="['FIFO_LND_1', 'FIFO_LND_2', 'FIFO_LND_3', 'FIFO_LND_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Мю LnD</mat-label>
         <input matInput type="number" [(ngModel)]="lndMean" step="1" placeholder="Мю">
       </mat-form-field>
     </div>
-    <div class="col-6" *ngIf="['FIFO_LND_1', 'FIFO_LND_2', 'FIFO_LND_3', 'FIFO_LND_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-3" *ngIf="['FIFO_LND_1', 'FIFO_LND_2', 'FIFO_LND_3', 'FIFO_LND_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Сігма LnD</mat-label>
         <input matInput type="number" [(ngModel)]="lndDispersion" [min]="0" [max]="100" step="1" placeholder="Мю">
@@ -54,19 +54,19 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="col-6" *ngIf="['FIFO_GWD_1', 'FIFO_GWD_2', 'FIFO_GWD_3', 'FIFO_GWD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-3" *ngIf="['FIFO_GWD_1', 'FIFO_GWD_2', 'FIFO_GWD_3', 'FIFO_GWD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Параметр масштабу (λ)</mat-label>
         <input matInput type="number" [(ngModel)]="gwdLambda" step="1" placeholder="Мю">
       </mat-form-field>
     </div>
-    <div class="col-6" *ngIf="['FIFO_GWD_1', 'FIFO_GWD_2', 'FIFO_GWD_3', 'FIFO_GWD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-3" *ngIf="['FIFO_GWD_1', 'FIFO_GWD_2', 'FIFO_GWD_3', 'FIFO_GWD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Параметр форми (k)</mat-label>
         <input matInput type="number" [(ngModel)]="gwdKappa" step="1" placeholder="Мю">
       </mat-form-field>
     </div>
-    <div class="col-6" *ngIf="['FIFO_GWD_1', 'FIFO_GWD_2', 'FIFO_GWD_3', 'FIFO_GWD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-3" *ngIf="['FIFO_GWD_1', 'FIFO_GWD_2', 'FIFO_GWD_3', 'FIFO_GWD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Параметр зсуву (γ>=0)</mat-label>
         <input matInput type="number" [(ngModel)]="gwdGamma" step="1" placeholder="Мю">
@@ -75,14 +75,39 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="col-6" *ngIf="['FIFO_UD_1', 'FIFO_UD_2', 'FIFO_UD_3', 'FIFO_UD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-3" *ngIf="['FIFO_UD_1', 'FIFO_UD_2', 'FIFO_UD_3', 'FIFO_UD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-label>Межi від {{udMin}} до {{udMax}}</mat-label>
       <mat-slider min="0" max="10" step="0.1" class="w-100">
         <input [(ngModel)]="udMin"  matSliderStartThumb>
         <input [(ngModel)]="udMax" matSliderEndThumb>
       </mat-slider>
     </div>
-    <div class="col-6" *ngIf="['FIFO_LND_1', 'FIFO_LND_2', 'FIFO_LND_3', 'FIFO_LND_4', 'FIFO_GWD_1', 'FIFO_GWD_2', 'FIFO_GWD_3', 'FIFO_GWD_4', 'FIFO_UD_1', 'FIFO_UD_2', 'FIFO_UD_3', 'FIFO_UD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-3" *ngIf="['FIFO_BD_1', 'FIFO_BD_2', 'FIFO_BD_3', 'FIFO_BD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Параметр форми (α)</mat-label>
+        <input matInput type="number" [(ngModel)]="bdAlpha" step="1" placeholder="Мю">
+        <mat-error *ngIf="bdAlpha < 0">
+          0 ...
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-3" *ngIf="['FIFO_BD_1', 'FIFO_BD_2', 'FIFO_BD_3', 'FIFO_BD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Параметр форми (β)</mat-label>
+        <input matInput type="number" [(ngModel)]="bdBeta" step="1" placeholder="Мю">
+        <mat-error *ngIf="bdBeta < 0">
+          0 ...
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-3" *ngIf="['FIFO_BD_1', 'FIFO_BD_2', 'FIFO_BD_3', 'FIFO_BD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+      <mat-label>Межi від {{bdMin}} до {{bdMax}}</mat-label>
+      <mat-slider min="0" max="10" step="0.1" class="w-100">
+        <input [(ngModel)]="bdMin"  matSliderStartThumb>
+        <input [(ngModel)]="bdMax" matSliderEndThumb>
+      </mat-slider>
+    </div>
+    <div class="col-3" *ngIf="['FIFO_LND_1', 'FIFO_LND_2', 'FIFO_LND_3', 'FIFO_LND_4', 'FIFO_GWD_1', 'FIFO_GWD_2', 'FIFO_GWD_3', 'FIFO_GWD_4', 'FIFO_UD_1', 'FIFO_UD_2', 'FIFO_UD_3', 'FIFO_UD_4', 'FIFO_BD_1', 'FIFO_BD_2', 'FIFO_BD_3', 'FIFO_BD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Час сімуляцii</mat-label>
         <input matInput type="number" [(ngModel)]="simulationTime" [min]="0" [max]="1000" step="1" placeholder="Мю">
@@ -91,7 +116,7 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="col-6" *ngIf="['FIFO_LND_1', 'FIFO_LND_2', 'FIFO_LND_3', 'FIFO_LND_4', 'FIFO_GWD_1', 'FIFO_GWD_2', 'FIFO_GWD_3', 'FIFO_GWD_4', 'FIFO_UD_1', 'FIFO_UD_2', 'FIFO_UD_3', 'FIFO_UD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-3" *ngIf="['FIFO_LND_1', 'FIFO_LND_2', 'FIFO_LND_3', 'FIFO_LND_4', 'FIFO_GWD_1', 'FIFO_GWD_2', 'FIFO_GWD_3', 'FIFO_GWD_4', 'FIFO_UD_1', 'FIFO_UD_2', 'FIFO_UD_3', 'FIFO_UD_4', 'FIFO_BD_1', 'FIFO_BD_2', 'FIFO_BD_3', 'FIFO_BD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Кількість сімуляцiй</mat-label>
         <input matInput type="number" [(ngModel)]="simulationNum" [min]="0" [max]="1000" step="1" placeholder="Мю">
@@ -102,6 +127,9 @@
     </div>
   </div>
   <div>
-    <canvas #acquisitions style="max-height:600px; height: 600px; width: 100%;"></canvas>
+    <canvas #acquisitions style="max-height:500px; height: 500px; width: 100%;"></canvas>
+  </div>
+  <div *ngIf="spinner" class="spinner">
+    <mat-spinner></mat-spinner>
   </div>
 </div>

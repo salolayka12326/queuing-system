@@ -10,6 +10,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {FormsModule} from "@angular/forms";
 import {LinearChartModule} from "./linear-chart/linear-chart.module";
 import {MatButtonModule} from "@angular/material/button";
+import {MatSpinner} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import {MatButtonModule} from "@angular/material/button";
     MatSelectModule,
     LinearChartModule,
     MatButtonModule,
+    MatSpinner
   ],
   providers: [
     provideAnimationsAsync()
