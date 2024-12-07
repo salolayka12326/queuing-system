@@ -26,8 +26,7 @@ export class AppComponent {
     { value: 'LND', label: 'Логнормальний розподіл' },
     { value: 'UD', label: 'Рівномірний розподіл' },
     { value: 'GWD', label: 'Розподіл Гнєденко Вейбула' },
-    { value: 'PD', label: 'Розподіл Парето' },
-    { value: 'CD', label: 'Розподіл Коші' },
+    { value: 'PD', label: 'Бета Розподіл' },
   ];
 
   selectedTab: number = 0;

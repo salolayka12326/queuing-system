@@ -175,7 +175,7 @@ export class LinearChartComponent {
       case 'FIFO_GWD_1': {
         for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
           labels.push(i.toFixed(2));
-          data.push(this.metricsService.simulateQueue_GWM_NUM_M(i, this.gwdLambda, this.gwdKappa, this.gwdGamma, this.simulationTime, this.simulationNum));
+          data.push(this.metricsService.simulateQueue_GWD_NUM_M(i, this.gwdLambda, this.gwdKappa, this.gwdGamma, this.simulationTime, this.simulationNum));
         }
         break;
       }
@@ -197,6 +197,34 @@ export class LinearChartComponent {
         for (let i = this.minT; i <= this.maxT; i++) {
           labels.push(i.toFixed(2));
           data.push(this.metricsService.simulateMG1Queue_GWD_TIME_CDF(this.lambda, this.gwdLambda, this.gwdKappa, this.gwdGamma, this.simulationTime, i, this.simulationNum));
+        }
+        break;
+      }
+      case 'FIFO_UD_1': {
+        for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
+          labels.push(i.toFixed(2));
+          data.push(this.metricsService.simulateQueue_UD_NUM_M(i, this.udMin, this.udMax, this.simulationTime, this.simulationNum));
+        }
+        break;
+      }
+      case 'FIFO_UD_2': {
+        for (let i = this.minN; i <= this.maxN; i++) {
+          labels.push(i.toFixed(2));
+          data.push(this.metricsService.simulateMG1Queue_UD_NUM_CDF(this.lambda, this.udMin, this.udMax, this.simulationTime, i, this.simulationNum));
+        }
+        break;
+      }
+      case 'FIFO_UD_3': {
+        for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
+          labels.push(i.toFixed(2));
+          data.push(this.metricsService.simulateQueue_UD_TIME_M(i, this.udMin, this.udMax, this.simulationTime, this.simulationNum));
+        }
+        break;
+      }
+      case 'FIFO_UD_4': {
+        for (let i = this.minT; i <= this.maxT; i++) {
+          labels.push(i.toFixed(2));
+          data.push(this.metricsService.simulateMG1Queue_UD_TIME_CDF(this.lambda, this.udMin, this.udMax, this.simulationTime, i, this.simulationNum));
         }
         break;
       }

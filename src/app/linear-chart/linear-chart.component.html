@@ -7,7 +7,7 @@
         <input [(ngModel)]="maxLambda" matSliderEndThumb>
       </mat-slider>
     </div>
-    <div class="col-6" *ngIf="['FIFO_ED_4', 'FIFO_LND_4', 'FIFO_GWD_4', 'FIFO_GWD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-6" *ngIf="['FIFO_ED_4', 'FIFO_LND_4', 'FIFO_GWD_4', 'FIFO_UD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-label>Час від {{minT}} до {{maxT}}</mat-label>
       <mat-slider min="0" max="100" class="w-100">
         <input [(ngModel)]="minT"  matSliderStartThumb>
