@@ -23,6 +23,7 @@ export class AppComponent {
   distribution = 'ED';
   distributions = [
     { value: 'ED', label: 'Експоненційний розподіл' },
+    { value: 'EDM', label: 'Експоненційний розподіл (Мод.)' },
     { value: 'LND', label: 'Логнормальний розподіл' },
     { value: 'UD', label: 'Рівномірний розподіл' },
     { value: 'GWD', label: 'Розподіл Гнєденко Вейбула' },

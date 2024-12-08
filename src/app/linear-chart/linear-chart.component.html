@@ -1,27 +1,13 @@
 <div class="p-3">
   <div class="row m-0 w-100">
-    <div class="col-3" *ngIf="['FIFO_ED_1', 'FIFO_ED_3', 'FIFO_LND_1', 'FIFO_LND_3', 'FIFO_GWD_1', 'FIFO_GWD_3', 'FIFO_UD_1', 'FIFO_UD_3', 'FIFO_BD_1', 'FIFO_BD_3'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-3" *ngIf="['FIFO_ED_1', 'FIFO_ED_3', 'FIFO_LND_1', 'FIFO_LND_3', 'FIFO_GWD_1', 'FIFO_GWD_3', 'FIFO_UD_1', 'FIFO_UD_3', 'FIFO_BD_1', 'FIFO_BD_3', 'FIFO_EDM_1', 'FIFO_EDM_3'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-label>Лямбда (інтенсивність) від {{minLambda}} до {{maxLambda}}</mat-label>
       <mat-slider min="0" max="100" class="w-100">
         <input [(ngModel)]="minLambda"  matSliderStartThumb>
         <input [(ngModel)]="maxLambda" matSliderEndThumb>
       </mat-slider>
     </div>
-    <div class="col-3" *ngIf="['FIFO_ED_4', 'FIFO_LND_4', 'FIFO_GWD_4', 'FIFO_UD_4', 'FIFO_BD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
-      <mat-label>Час від {{minT}} до {{maxT}}</mat-label>
-      <mat-slider min="0" max="100" class="w-100">
-        <input [(ngModel)]="minT"  matSliderStartThumb>
-        <input [(ngModel)]="maxT" matSliderEndThumb>
-      </mat-slider>
-    </div>
-    <div class="col-3" *ngIf="['FIFO_ED_2', 'FIFO_LND_2', 'FIFO_GWD_2', 'FIFO_UD_2', 'FIFO_BD_2'].includes(discipline+'_'+distribution+'_'+metricNumber)">
-      <mat-label>Кількість людей у черзі від {{minN}} до {{maxN}}</mat-label>
-      <mat-slider min="0" max="100" class="w-100">
-        <input [(ngModel)]="minN"  matSliderStartThumb>
-        <input [(ngModel)]="maxN" matSliderEndThumb>
-      </mat-slider>
-    </div>
-    <div class="col-3" *ngIf="['FIFO_ED_1', 'FIFO_ED_2', 'FIFO_ED_3', 'FIFO_ED_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-3" *ngIf="['FIFO_ED_1', 'FIFO_ED_2', 'FIFO_ED_3', 'FIFO_ED_4', 'FIFO_EDM_1', 'FIFO_EDM_3'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Мю (інтенсивність обслуговування)</mat-label>
         <input matInput type="number" [(ngModel)]="mu" [min]="1" [max]="100" step="1" placeholder="Мю">
@@ -107,22 +93,25 @@
         <input [(ngModel)]="bdMax" matSliderEndThumb>
       </mat-slider>
     </div>
-    <div class="col-3" *ngIf="['FIFO_LND_1', 'FIFO_LND_2', 'FIFO_LND_3', 'FIFO_LND_4', 'FIFO_GWD_1', 'FIFO_GWD_2', 'FIFO_GWD_3', 'FIFO_GWD_4', 'FIFO_UD_1', 'FIFO_UD_2', 'FIFO_UD_3', 'FIFO_UD_4', 'FIFO_BD_1', 'FIFO_BD_2', 'FIFO_BD_3', 'FIFO_BD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-3" *ngIf="['FIFO_PD_1', 'FIFO_PD_3'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-form-field appearance="fill" class="w-100">
-        <mat-label>Час сімуляцii</mat-label>
-        <input matInput type="number" [(ngModel)]="simulationTime" [min]="0" [max]="1000" step="1" placeholder="Мю">
-        <mat-error *ngIf="simulationTime < 0 || simulationTime > 1000">
-          0 ... 1000
+        <mat-label>Параметр форми</mat-label>
+        <input matInput type="number" [(ngModel)]="pdAlpha" step="1" placeholder="Мю">
+        <mat-error *ngIf="pdAlpha < 0">
+          0 ...
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="col-3" *ngIf="['FIFO_LND_1', 'FIFO_LND_2', 'FIFO_LND_3', 'FIFO_LND_4', 'FIFO_GWD_1', 'FIFO_GWD_2', 'FIFO_GWD_3', 'FIFO_GWD_4', 'FIFO_UD_1', 'FIFO_UD_2', 'FIFO_UD_3', 'FIFO_UD_4', 'FIFO_BD_1', 'FIFO_BD_2', 'FIFO_BD_3', 'FIFO_BD_4'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+    <div class="col-3" *ngIf="['FIFO_LND_1', 'FIFO_LND_2', 'FIFO_LND_3', 'FIFO_LND_4', 'FIFO_GWD_1', 'FIFO_GWD_2', 'FIFO_GWD_3', 'FIFO_GWD_4', 'FIFO_UD_1', 'FIFO_UD_2', 'FIFO_UD_3', 'FIFO_UD_4', 'FIFO_BD_1', 'FIFO_BD_2', 'FIFO_BD_3', 'FIFO_BD_4', 'FIFO_EDM_1', 'FIFO_EDM_3'].includes(discipline+'_'+distribution+'_'+metricNumber)">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Час сімуляцii</mat-label>
+        <input matInput type="number" [(ngModel)]="simulationTime" [min]="0" step="1" placeholder="Мю">
+      </mat-form-field>
+    </div>
+    <div class="col-3" *ngIf="['FIFO_LND_1', 'FIFO_LND_2', 'FIFO_LND_3', 'FIFO_LND_4', 'FIFO_GWD_1', 'FIFO_GWD_2', 'FIFO_GWD_3', 'FIFO_GWD_4', 'FIFO_UD_1', 'FIFO_UD_2', 'FIFO_UD_3', 'FIFO_UD_4', 'FIFO_BD_1', 'FIFO_BD_2', 'FIFO_BD_3', 'FIFO_BD_4', 'FIFO_EDM_1', 'FIFO_EDM_3'].includes(discipline+'_'+distribution+'_'+metricNumber)">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Кількість сімуляцiй</mat-label>
-        <input matInput type="number" [(ngModel)]="simulationNum" [min]="0" [max]="1000" step="1" placeholder="Мю">
-        <mat-error *ngIf="simulationNum < 0 || simulationNum > 1000">
-          0 ... 1000
-        </mat-error>
+        <input matInput type="number" [(ngModel)]="simulationNum" [min]="0" step="1" placeholder="Мю">
       </mat-form-field>
     </div>
   </div>

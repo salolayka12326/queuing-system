@@ -39,16 +39,8 @@
         <app-linear-chart [discipline]="discipline" [distribution]="distribution" [metricNumber]="1" #appLineChart></app-linear-chart>
       </mat-tab>
 
-      <mat-tab label="Кількість у черзі (CDF)" class="overflow-hidden">
-        <app-linear-chart [discipline]="discipline" [distribution]="distribution" [metricNumber]="2" #appLineChart></app-linear-chart>
-      </mat-tab>
-
       <mat-tab label="Час очікування у черзі (M)" class="overflow-hidden">
         <app-linear-chart [discipline]="discipline" [distribution]="distribution" [metricNumber]="3" #appLineChart></app-linear-chart>
-      </mat-tab>
-
-      <mat-tab label="Час очікування у черзі (CDF)" class="overflow-hidden">
-        <app-linear-chart [discipline]="discipline" [distribution]="distribution" [metricNumber]="4" #appLineChart></app-linear-chart>
       </mat-tab>
     </mat-tab-group>
   </div>
