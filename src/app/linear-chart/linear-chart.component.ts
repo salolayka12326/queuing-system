@@ -213,16 +213,30 @@ export class LinearChartComponent {
           break;
         }
         case 'FIFO_PD_1': {
-          for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
+          for (let i = this.minLambda; i <= this.maxLambda; i += 0.01) {
             labels.push(i.toFixed(2));
             data.push(this.metricsService.simulateQueue_PD_NUM_M(i, this.bdAlpha, this.simulationTime, this.simulationNum));
           }
           break;
         }
         case 'FIFO_PD_3': {
-          for (let i = this.minLambda; i <= this.maxLambda; i += 0.1) {
+          for (let i = this.minLambda; i <= this.maxLambda; i += 0.01) {
             labels.push(i.toFixed(2));
             data.push(this.metricsService.simulateQueue_PD_TIME_M(i, this.bdAlpha, this.simulationTime, this.simulationNum));
+          }
+          break;
+        }
+        case 'FB_PD_1': {
+          for (let i = this.minLambda; i <= this.maxLambda; i += 0.01) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateQueue_FB_PD_NUM_M(i, this.bdAlpha, this.simulationTime, this.simulationNum));
+          }
+          break;
+        }
+        case 'FB_PD_3': {
+          for (let i = this.minLambda; i <= this.maxLambda; i += 0.01) {
+            labels.push(i.toFixed(2));
+            data.push(this.metricsService.simulateQueue_FB_PD_TIME_M(i, this.bdAlpha, this.simulationTime, this.simulationNum));
           }
           break;
         }
@@ -316,6 +330,12 @@ export class LinearChartComponent {
         return ['Лямбда', 'Кількість у черзі'];
       }
       case 'FIFO_PD_3': {
+        return ['Лямбда', 'Час'];
+      }
+      case 'FB_PD_1': {
+        return ['Лямбда', 'Кількість у черзі'];
+      }
+      case 'FB_PD_3': {
         return ['Лямбда', 'Час'];
       }
     }
@@ -561,6 +581,78 @@ export class LinearChartComponent {
         this.bdMax = 1;
         this.bdAlpha =0.8;
         this.bdBeta = 0.8;
+        break;
+      }
+      case 'FIFO_PD_1': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 0.15;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 5;
+
+        this.simulationTime = 1000;
+
+        this.pdAlpha = 1;
+        break;
+      }
+      case 'FIFO_PD_3': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 1;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 5;
+
+        this.simulationTime = 1000;
+
+        this.pdAlpha = 1;
+        break;
+      }
+      case 'FB_PD_1': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 0.15;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 5;
+
+        this.simulationTime = 1000;
+
+        this.pdAlpha = 1;
+        break;
+      }
+      case 'FB_PD_3': {
+        this.minT = 0;
+        this.maxT = 10;
+
+        this.minLambda = 0;
+        this.maxLambda = 1;
+
+        this.minN = 0;
+        this.maxN = 30;
+
+        this.mu = 5;
+        this.lambda = 5;
+
+        this.simulationTime = 1000;
+
+        this.pdAlpha = 1;
         break;
       }
     }

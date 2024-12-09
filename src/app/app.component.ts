@@ -12,18 +12,14 @@ export class AppComponent {
   discipline = 'FIFO';
   disciplines = [
     { value: 'FIFO', label: 'First In, First Out' },
-    { value: 'LIFO', label: 'Last In, First Out' },
-    { value: 'SIRO', label: 'Service In Random Order' },
-    { value: 'PS', label: 'Processor Sharing' },
-    { value: 'SJF', label: 'Shortest Job First' },
-    { value: 'SRT', label: 'Shortest Remaining Time' },
-    { value: 'PWA', label: 'Priority with Aging' },
+    { value: 'FB', label: 'Foreground Background' },
   ];
 
   distribution = 'ED';
   distributions = [
     { value: 'ED', label: 'Експоненційний розподіл' },
     { value: 'EDM', label: 'Експоненційний розподіл (Мод.)' },
+    { value: 'PD', label: 'Розподіл Парето' },
     { value: 'LND', label: 'Логнормальний розподіл' },
     { value: 'UD', label: 'Рівномірний розподіл' },
     { value: 'GWD', label: 'Розподіл Гнєденко Вейбула' },
